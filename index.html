@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta Premium - Shopee & TikTok</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #8b5cf6;
+            --shopee: #f97316;
+            --tiktok-cyan: #06b6d4;
+            --tiktok-pink: #f43f5e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(249, 115, 22, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        /* Glassmorphism Header */
+        .header {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 3em;
+            font-weight: 700;
+            background: linear-gradient(to right, #c084fc, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            color: var(--text-muted);
+            margin-top: 15px;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .badge {
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .badge.shopee { 
+            background: rgba(249, 115, 22, 0.1); 
+            color: var(--shopee);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+        .badge.tiktok { 
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid var(--tiktok-cyan);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2), inset 0 0 10px rgba(244, 63, 94, 0.2);
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
+        }
+
+        /* Modern Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px 30px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--primary);
+            opacity: 0.5;
+            transition: 0.4s;
+        }
+
+        .step-card:hover {
+            transform: translateX(10px);
+            background: rgba(40, 53, 75, 0.8);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .step-card:hover::before {
+            opacity: 1;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .step-header .icon {
+            font-size: 1.2em;
+            color: var(--primary);
+            transition: 0.4s;
+        }
+
+        .step-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            color: var(--text-muted);
+            opacity: 0;
+        }
+
+        .step-card.active .step-body {
+            max-height: 500px;
+            margin-top: 20px;
+            opacity: 1;
+        }
+
+        .step-card.active .icon {
+            transform: rotate(45deg);
+        }
+
+        .step-body ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .step-body li {
+            margin-bottom: 12px;
+            position: relative;
+            list-style: none;
+        }
+        
+        .step-body li::before {
+            content: '✦';
+            position: absolute;
+            left: -20px;
+            color: var(--primary);
+            font-size: 0.8em;
+            top: 4px;
+        }
+
+        /* Grid for Responsibilities */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 50px 0;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+
+        .box {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+        }
+
+        .box.client::before { background: linear-gradient(to right, #10b981, #34d399); }
+        .box.not-included::before { background: linear-gradient(to right, #ef4444, #f87171); }
+
+        .box h3 { margin-top: 0; font-size: 1.3em; margin-bottom: 20px; }
+        .box ul { padding-left: 0; margin: 0; list-style: none; }
+        .box li { 
+            margin-bottom: 15px; 
+            padding-left: 28px;
+            position: relative;
+            color: var(--text-muted);
+        }
+        
+        .box.client li::before { content: '✓'; color: #10b981; position: absolute; left: 0; font-weight: bold; }
+        .box.not-included li::before { content: '✕'; color: #ef4444; position: absolute; left: 0; font-weight: bold; }
+
+        /* Pricing Section Premium */
+        .pricing {
+            background: linear-gradient(145deg, #1e1b4b, #312e81);
+            padding: 60px 40px;
+            border-radius: 30px;
+            text-align: center;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5), inset 0 0 40px rgba(139, 92, 246, 0.2);
+        }
+
+        .pricing h2 {
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .pricing h2::after { display: none; }
+
+        .price-value {
+            font-size: 4em;
+            font-weight: 700;
+            background: linear-gradient(to bottom right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .price-sub {
+            color: #a5b4fc;
+            font-size: 1.1em;
+            margin-top: 10px;
+            margin-bottom: 35px;
+        }
+
+        .commission-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 25px;
+            border-radius: 16px;
+            display: inline-block;
+            max-width: 500px;
+        }
+
+        .commission-box strong {
+            color: #34d399;
+            font-size: 1.2em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-note {
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.4);
+            margin-top: 30px;
+        }
+        
+        .action-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-top: 40px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -10px rgba(139, 92, 246, 0.5);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(139, 92, 246, 0.6);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Proposta Estratégica</h1>
+        <p>Gestão de E-commerce & Conteúdo Digital</p>
+        <div class="badges">
+            <span class="badge shopee">🛍️ Shopee</span>
+            <span class="badge tiktok">🎵 TikTok</span>
+        </div>
+    </div>
+
+    <h2>🗺️ O Caminho para o Sucesso</h2>
+    <div class="timeline">
+        
+        <div class="step-card" onclick="this.classList.toggle('active')">
+            <div class="step-header">
+                <span>01. Configuração Inicial e Cadastro</span>
+                <span class="icon">+</span>
+            </div>
+            <div class="step-body">
+                <ul>
+                    <li>Levantamento e envolvimento da documentação da empresa e dados cadastrais.</li>
+                    <li>Criação, configuração e aprovação oficial das contas nas plataformas de vendas.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step-card" onclick="this.classList.toggle('active')">
+            <div class="step-header">
+                <span>02. Vitrine Visual & Conteúdo</span>
+                <span class="icon">+</span>
+            </div>
+            <div class="step-body">
+                <ul>
+                    <li>Sessão de fotos dedicada para cada um dos modelos de produtos.</li>
+                    <li>Elaboração de fotos atrativas e super profissionais para os anúncios.</li>
+                    <li>Criação e edição de vídeos dinâmicos focados em divulgação e alta conversão.</li>
+                    <li><strong style="color: #fff;">Exclusividade:</strong> Todo o material é otimizado exclusivamente para Shopee e TikTok.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step-card" onclick="this.classList.toggle('active')">
+            <div class="step-header">
+                <span>03. Estruturação de Anúncios (Ads)</span>
+                <span class="icon">+</span>
+            </div>
+            <div class="step-body">
+                <ul>
+                    <li>Início imediato após a conclusão dos cadastros e materiais visuais.</li>
+                    <li>Configuração de campanhas avançadas em <strong style="color: #fff;">Shopee Ads</strong> e <strong style="color: #fff;">TikTok Ads</strong>.</li>
+                    <li>Foco total em impulsionar vendas e gerar tração inicial rápida.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step-card" onclick="this.classList.toggle('active')">
+            <div class="step-header">
+                <span>04. Gestão Contínua & Resultados</span>
+                <span class="icon">+</span>
+            </div>
+            <div class="step-body">
+                <ul>
+                    <li>Gerenciamento completo das contas, otimização de campanhas e acompanhamento de estoque.</li>
+                    <li><strong style="color: #fff;">Relatório Semanal:</strong> Alinhamento de andamento toda semana.</li>
+                    <li><strong style="color: #fff;">Relatório Mensal:</strong> Fechamento completo de métricas e ROI.</li>
+                    <li><strong style="color: #fff;">Quality Assurance:</strong> Manutenção da reputação e pontuação do catálogo no verde.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="grid-2">
+        <div class="box client">
+            <h3>🤝 Suas Responsabilidades</h3>
+            <ul>
+                <li>Disponibilizar os produtos físicos para captação de fotos e vídeos de alta qualidade.</li>
+                <li>Arcar com os custos de envio, verba de anúncios e operação interna.</li>
+                <li>Fornecer dados e acessos necessários para iniciarmos o projeto.</li>
+            </ul>
+        </div>
+
+        <div class="box not-included">
+            <h3>⚠️ O que NÃO está incluso</h3>
+            <ul>
+                <li>Atendimento e suporte direto ao cliente final.</li>
+                <li>Logística, preparo de envios e postagens.</li>
+                <li>Verba de tráfego pago (o dinheiro investido direto nas plataformas).</li>
+                <li>Custos com devoluções ou taxas operacionais da empresa.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="pricing">
+        <h2>💰 Investimento</h2>
+        <div class="price-value">R$ 700<span style="font-size: 0.3em; color: #a5b4fc;">,00 /mês</span></div>
+        <div class="price-sub">Mensalidade Fixa (Vencimento dia 10)</div>
+        
+        <div class="commission-box">
+            <strong>+ 20% de Comissão (Ganha-Ganha)</strong>
+            <span style="color: var(--text-muted); font-size: 0.95em;">
+                Aplicada sobre o lucro líquido de cada venda, validada apenas após atingirmos a marca de <strong style="color: #fff;">50 vendas acumuladas</strong> (em cada canal de forma independente).
+            </span>
+        </div>
+        
+        <p class="footer-note">* Valores de investimento em anúncios, fretes, impostos e custos operacionais são geridos separadamente pelo contratante.</p>
+        
+        <button class="action-btn" onclick="alert('Maravilha! Vamos juntos levar seu e-commerce para o próximo nível. 🚀')">Aprovar Proposta e Iniciar Projeto 🚀</button>
+    </div>
+
+</div>
+
+</body>
+</html>
